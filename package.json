@@ -1,0 +1,23 @@
+{
+  "name": "basic_node",
+  "version": "1.0.0",
+  "description": "Learning basics of Node JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "basics",
+    "learning",
+    "javascript",
+    "node"
+  ],
+  "author": "Min Khaung",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.30.0",
+    "nodemon": "^2.0.22",
+    "uuid": "^9.0.0"
+  }
+}
