@@ -1,4 +1,4 @@
-const {format} = require('data-fns')
+const {format} = require('date-fns')
 const {v4 : uuid} = require('uuid')
 
 const fs = require('fs')
@@ -13,7 +13,7 @@ const logEvents = async (msg) =>{
         if(!fs.existsSync(path.join(__dirname,'logs'))){
             await fsPromise.mkdir(path.join(__dirname,'logs'))
         }
-        await fsPromise.appendFile(path.join(__dirname,'logs','server_logs.txt'))
+        await fsPromise.appendFile(path.join(__dirname,'logs','server_logs.log'),logItem)
     } catch (err) {
         console.error(err)
     }
