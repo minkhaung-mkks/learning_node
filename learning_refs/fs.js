@@ -3,7 +3,7 @@ const path = require('path')
 
 const fsPromise = require('fs').promises;
 
-// Interesting Fact: These Console Logs are random in their order of execution, buffered data something showing up 2nd.
+// Interesting Fact: These Console Logs are random in their order of execution, buffered data something showing up 2nd, and rename happening before append
 
 fs.readFile(path.join(__dirname,'fs_files','test.txt'), (err, data)=>{
     if(err) throw err
@@ -46,6 +46,9 @@ const fsProTest = async ()=>{
     await fsPromise.appendFile(path.join(__dirname,'fs_files','promise.txt'),`\n\nWorld:.....`)
     await fsPromise.rename(path.join(__dirname,'fs_files','promise.txt'),path.join(__dirname,'fs_files','promiseDone.txt'))
      data = await fsPromise.readFile(path.join(__dirname,'fs_files','promiseDone.txt'),'utf-8');
+    
+     //Unlink = delete
+     await fsPromise.unlink(path.join(__dirname,'fs_files','promiseDone.txt'))
     console.log(data)
 }
 
