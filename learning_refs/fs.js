@@ -39,8 +39,7 @@ const fsPromise = require('fs').promises;
 // })
 
 
-// Use fsPromise to avoid callback hell
-
+// Use fsPromise to avoid callback hell and to make sure all the functions get executed in order.
 const fsProTest = async ()=>{
     let data = await fsPromise.readFile(path.join(__dirname,'fs_files','test.txt'),'utf-8');
     await fsPromise.writeFile(path.join(__dirname,'fs_files','promise.txt'),data)
