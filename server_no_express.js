@@ -29,6 +29,11 @@ const server = http.createServer((req,res)=>{
         break;
         default:
             // Give 404 Page
+            res.statusCode=404;
+            fileLocale=path.join(__dirname,'Web_pages', '404.html');
+            fs.readFile(fileLocale, 'utf-8', (err,data)=>{
+                res.end(data)
+            })
             break;
     }
 });
