@@ -16,4 +16,9 @@ app.get('/old_page(.html)?',(req,res)=>{
     res.redirect(301, '/new_page')
 })
 
+// 404 Error This must be at the bottom or all requests even valid ones will get linked to here
+app.get('/*', (req,res)=>{
+    res.status(404).sendFile(path.join(__dirname,'Web_pages','404.html'))
+})
+
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`))
