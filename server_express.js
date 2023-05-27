@@ -16,6 +16,33 @@ app.get('/old_page(.html)?',(req,res)=>{
     res.redirect(301, '/new_page')
 })
 
+// Route Chaining
+app.get('/chain(.html)?',(req,res,next)=>{
+    console.log('One')
+    next()//
+},
+(req,res)=>{
+    res.send("Chained")
+}
+)
+
+// Typical way of doing chaining
+const one = (req,res,next)=>{
+    console.log('one')
+    next()
+}
+
+const two = (req,res,next)=>{
+    console.log('two')
+    next()
+}
+
+const three = (req,res)=>{
+    res.send("Chained")
+}
+
+app.get('/tchained(.html)?',[one,two,three])
+
 // 404 Error This must be at the bottom or all requests even valid ones will get linked to here
 app.get('/*', (req,res)=>{
     res.status(404).sendFile(path.join(__dirname,'Web_pages','404.html'))
