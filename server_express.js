@@ -10,9 +10,14 @@ app.use(express.urlencoded({extended:false}))
 // Middleware for json
 app.use(express.json())
 
-
 // Serving Static Files like css, images, etc...
 app.use(express.static(path.join(__dirname,'/public')))
+
+//Custom middleware, next is necessary
+app.use((req,res,next)=>{
+    console.log(req.method + "| : |"+req.path)
+    next()
+})
 
 //These Gets are called Route Handlers
 app.get('^/$|/index(.html)?', (req,res)=>{
