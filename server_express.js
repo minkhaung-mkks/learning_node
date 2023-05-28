@@ -3,6 +3,7 @@ const path = require('path')
 const cors = require('cors')
 
 const {logEvents,logger} = require('./middleware/logEvents')
+const errorHandler= require('./middleware/Error_Handler')
 
 const PORT = process.env.PORT || 3500;
 const app = express();
@@ -98,9 +99,6 @@ app.get('/*', (req,res)=>{
 
 // Override default error handling to show
 // Needs to be here to not overwrite things 
-app.use((err,req,res,next)=>{
-    console.error(err.stack);
-    res.status(500).send(err.message);
-})
+app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`))
