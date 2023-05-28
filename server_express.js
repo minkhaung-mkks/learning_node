@@ -4,6 +4,17 @@ const path = require('path')
 const PORT = process.env.PORT || 3500;
 const app = express();
 
+//built in middleware to handle urlencoded Data like form data
+//Content-Type: application/x-www-form-urlencoded
+app.use(express.urlencoded({extended:false}))
+// Middleware for json
+app.use(express.json())
+
+
+// Serving Static Files like css, images, etc...
+app.use(express.static(path.join(__dirname,'/public')))
+
+//These Gets are called Route Handlers
 app.get('^/$|/index(.html)?', (req,res)=>{
     res.sendFile(path.join(__dirname,'Web_pages','index.html'));
 })
