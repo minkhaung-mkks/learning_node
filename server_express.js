@@ -1,5 +1,7 @@
 const express = require('express')
 const path = require('path')
+const cors = require('cors')
+
 const {logEvents,logger} = require('./middleware/logEvents')
 
 const PORT = process.env.PORT || 3500;
@@ -26,6 +28,28 @@ app.use((req,res,next)=>{
 })
 
 app.use(logger)
+
+
+// CORS allows everything by domain but we can limit it with a whitelist
+const corsWhitelist = ['https://www.example.com','http://localhost:3500','http://127.0.0.1:3500']
+
+//Use whitelist
+const corsOptions = {
+    origin:(origin,callback)=>{
+        // if origin is part of the whitelist
+        // !origin = undefined since localhost is considered to be undefined, should be removed on prod
+        if(corsWhitelist.indexOf(origin) !== -1 || !origin){
+            callback(null,true)
+        }
+        else{
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+    optionsSuccessStatus: 200
+}
+
+// Needs to be here, Cross Origin Resource Sharing
+app.use(cors(corsOptions))
 
 //These Gets are called Route Handlers
 app.get('^/$|/index(.html)?', (req,res)=>{
@@ -70,6 +94,13 @@ app.get('/tchained(.html)?',[one,two,three])
 // 404 Error This must be at the bottom or all requests even valid ones will get linked to here
 app.get('/*', (req,res)=>{
     res.status(404).sendFile(path.join(__dirname,'Web_pages','404.html'))
+})
+
+// Override default error handling to show
+// Needs to be here to not overwrite things 
+app.use((err,req,res,next)=>{
+    console.error(err.stack);
+    res.status(500).send(err.message);
 })
 
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`))
