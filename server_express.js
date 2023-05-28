@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const {logEvents,logger} = require('./middleware/logEvents')
 
 const PORT = process.env.PORT || 3500;
 const app = express();
@@ -14,10 +15,17 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname,'/public')))
 
 //Custom middleware, next is necessary
+// app.use((req,res,next)=>{
+//     console.log(req.method + "| : |"+req.path)
+//     next()
+// })
+
 app.use((req,res,next)=>{
-    console.log(req.method + "| : |"+req.path)
-    next()
+    logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'Req_Logs.log');
+    next();
 })
+
+app.use(logger)
 
 //These Gets are called Route Handlers
 app.get('^/$|/index(.html)?', (req,res)=>{
