@@ -93,8 +93,18 @@ const three = (req,res)=>{
 app.get('/tchained(.html)?',[one,two,three])
 
 // 404 Error This must be at the bottom or all requests even valid ones will get linked to here
-app.get('/*', (req,res)=>{
-    res.status(404).sendFile(path.join(__dirname,'Web_pages','404.html'))
+// can use app.use or app.get but we dont do that to be more systematic, app.use is for middleware, app.get is for route handling
+app.all('*', (req,res)=>{
+    res.status(404)
+    if(req.accepts('html')){
+        res.sendFile(path.join(__dirname,'Web_pages','404.html'))
+    }
+    else if(res.accepts('json')){
+        res.json({error: '404 Not Found'})
+    }
+    else{
+        res.type('txt').send('404 Not Found')
+    }
 })
 
 // Override default error handling to show
