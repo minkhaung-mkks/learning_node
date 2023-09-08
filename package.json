@@ -5,8 +5,8 @@
   "main": "server_express.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index",
-    "start": "node index"
+    "dev": "nodemon server_express.js",
+    "start": "node server_express.js"
   },
   "keywords": [
     "node",
