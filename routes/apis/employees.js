@@ -23,3 +23,10 @@ router.route('/')
             "id": req.body.id
         })
     })
+
+router.route('/:id')
+    .get((req, res) => {
+        const reqId = req.params.id
+        const filteredData = data.employees.filter((employee) => (employee.id === reqId))
+        res.json(filteredData)
+    })
