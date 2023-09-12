@@ -30,8 +30,6 @@ const updateEmployees = (req, res) => {
     //Update Employee
     const reqId = parseInt(req.body.id)
     const employee = data.employees.filter((emp) => (emp.id === reqId))
-    console.log("DETED")
-    console.log(employee)
     if (!employee) {
         return res.status(400).json({ "message": `No such employee with id of ${id} found.` })
     }
@@ -40,9 +38,7 @@ const updateEmployees = (req, res) => {
     const otherEmployees = data.employees.filter(emp => (
         emp.id !== reqId
     ))
-    console.log(otherEmployees)
     const newUnsortedArray = [...otherEmployees, ...employee]
-    console.log(newUnsortedArray)
     const sortedArray = newUnsortedArray.sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 : 0)
     // console.log(sortedArray)
     //Update the json file with the new employee list
@@ -59,7 +55,6 @@ const deleteEmployees = (req, res) => {
 
 const getEmployee = (req, res) => {
     const reqId = parseInt(req.params.id)
-    console.log(reqId)
     const filteredData = data.employees.filter((employee) => (employee.id === reqId))
     res.json(filteredData)
 }
