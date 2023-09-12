@@ -26,7 +26,10 @@ router.route('/')
 
 router.route('/:id')
     .get((req, res) => {
-        const reqId = req.params.id
+        const reqId = parseInt(req.params.id)
+        console.log(reqId)
         const filteredData = data.employees.filter((employee) => (employee.id === reqId))
         res.json(filteredData)
     })
+
+module.exports = router
