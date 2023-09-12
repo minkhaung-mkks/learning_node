@@ -21,10 +21,11 @@ app.use(express.static(path.join(__dirname, '/public')))
 // make other routes use the public folder for static files
 app.use('/subdirs', express.static(path.join(__dirname, '/public')))
 
-// make it use the routes/subdir.js for /subdirs urls
-app.use('/subdirs', require('./routes/subdir'))
 // make it use the routes/root.js for / urls
 app.use('/', require('./routes/root'))
+// make it use the routes/subdir.js for /subdirs urls
+app.use('/subdirs', require('./routes/subdir'))
+app.use('/employees', require('./routes/apis/employees'))
 
 //Custom middleware, next is necessary
 // app.use((req,res,next)=>{
