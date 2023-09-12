@@ -1,35 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const path = require('path')
-const data = {}
-data.employees = require('../../data/employees.json')
+const employeeController = require('../../controllers/employeeController')
+
 
 router.route('/')
-    .get((req, res) => {
-        res.json(data.employees)
-    })
-    .post((req, res) => {
-        const newEmployee = req.body.employee
-        data.employees.push(newEmployee)
-        // Append to JSON file
-    })
-    .put((req, res) => {
-        //Update Employee
-        const newEmployees = req.body.employees
-        //Update the json file with the new employee list
-    })
-    .delete((req, res) => {
-        res.json({
-            "id": req.body.id
-        })
-    })
+    .get(employeeController.getAllEmployee)
+    .post(employeeController.addNewEmployee)
+    .put(employeeController.updateEmployees)
+    .delete(employeeController.deleteEmployees)
 
 router.route('/:id')
-    .get((req, res) => {
-        const reqId = parseInt(req.params.id)
-        console.log(reqId)
-        const filteredData = data.employees.filter((employee) => (employee.id === reqId))
-        res.json(filteredData)
-    })
+    .get(employeeController.getEmployee)
 
 module.exports = router
