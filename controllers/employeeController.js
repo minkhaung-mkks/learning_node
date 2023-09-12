@@ -50,9 +50,11 @@ const updateEmployees = (req, res) => {
 }
 
 const deleteEmployees = (req, res) => {
-    res.json({
-        "id": req.body.id
-    })
+    const reqId = parseInt(req.body.id)
+    const otherEmployees = data.employees.filter(emp => (
+        emp.id !== reqId
+    ))
+    updateData(otherEmployees, res)
 }
 
 const getEmployee = (req, res) => {
