@@ -2,8 +2,8 @@ const express = require('express')
 const path = require('path')
 const cors = require('cors')
 
-const { logEvents, logger } = require('./middleware/logEvents')
-const errorHandler = require('./middleware/Error_Handler')
+const { logEvents, logger } = require('./middleware/LogEvents')
+const errorHandler = require('./middleware/ErrorHandler')
 
 const PORT = process.env.PORT || 3500;
 const app = express();
