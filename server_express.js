@@ -40,14 +40,11 @@ app.use('/employees', require('./routes/apis/employees'))
 //     next();
 // })
 
-
-
-
 // Needs to be here, Cross Origin Resource Sharing
 app.use(cors(corsOptions))
 
 // Override default error handling to show
-// Needs to be here to not overwrite thi ngs 
+// Needs to be here to not overwrite things 
 app.use(errorHandler)
 
 
