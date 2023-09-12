@@ -72,7 +72,7 @@ app.use(errorHandler)
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
-        res.sendFile(path.join(__dirname, 'Web_pages', '404.html'))
+        res.sendFile(path.join(__dirname, 'views', '404.html'))
     }
     else if (res.accepts('json')) {
         res.json({ error: '404 Not Found' })

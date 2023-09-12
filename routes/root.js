@@ -4,11 +4,11 @@ const path = require('path');
 
 //These Gets are called Route Handlers
 router.get('^/$|/index(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'Web_pages', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'views', 'index.html'));
 })
 
 router.get('/new_page(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'Web_pages', 'new_page.html'))
+    res.sendFile(path.join(__dirname, '..', 'views', 'new_page.html'))
 })
 
 router.get('/old_page(.html)?', (req, res) => {
