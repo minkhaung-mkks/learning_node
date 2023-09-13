@@ -27,6 +27,7 @@ app.use('/', require('./routes/root'))
 // make it use the routes/subdir.js for /subdirs urls
 app.use('/subdirs', require('./routes/subdir'))
 app.use('/employees', require('./routes/apis/employees'))
+app.use('/auth', require('./routes/apis/auth'))
 
 //Custom middleware, next is necessary
 // app.use((req,res,next)=>{
