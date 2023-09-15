@@ -88,6 +88,27 @@ const handleRefreshToken = async (req, res) => {
         }
     )
 }
+const handleLogout = async (req, res) => {
+    const cookies = req.cookies
+    if (!cookies?.jwt) return res.sendStatus(204); // No content
+    const refreshToken = cookies.jwt
+    // Is refreshToken in DB
+    const foundUser = data.users.find(person => person.refreshToken === refreshToken);
+    if (!foundUser) {
+        // Use Secure: True in prod
+        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
+        return res.sendStatus(204);
+    };
+    const otherUsers = data.users.filter(person => person.refreshToken !== refreshToken);
+    const currentUser = { ...foundUser, refreshToken: '' }
+    data.users = [...otherUsers, currentUser]
+    await fsPromises.writeFile(
+        path.join(__dirname, '..', 'models', 'users.json'),
+        JSON.stringify(data.users)
+    )
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
+    res.sendStatus(200)
+}
 const updateJsonFile = async (data, res, status = 201) => {
     try {
         fs.writeFileSync(filePath, JSON.stringify(data));   //'a+' is append mode
@@ -104,5 +125,6 @@ const updateData = async (data, res) => {
 module.exports = {
     handleLogin,
     registerNewUser,
-    handleRefreshToken
+    handleRefreshToken,
+    handleLogout
 }
