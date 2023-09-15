@@ -7,6 +7,7 @@ const { logEvents, logger } = require('./middleware/LogEvents')
 const errorHandler = require('./middleware/ErrorHandler')
 const corsOptions = require('./configs/CorOptions')
 const verifyJWT = require('./middleware/VerifyJWT')
+const addCredentialsHeader = require('./middleware/addCredentials')
 
 const PORT = process.env.PORT || 3500;
 const app = express();
@@ -47,7 +48,8 @@ app.use('/employees', require('./routes/apis/employees'))
 //     next();
 // })
 
-// Needs to be here, Cross Origin Resource Sharing
+// Needs to be here, Cross Origin Resource Sharing\
+app.use(addCredentialsHeader)
 app.use(cors(corsOptions))
 
 // Override default error handling to show
