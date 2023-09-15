@@ -1,6 +1,6 @@
 
 // CORS allows everything by domain but we can limit it with a whitelist
-const corsWhitelist = ['https://www.example.com', 'http://localhost:3500', 'http://127.0.0.1:3500']
+const corsWhitelist = require('./allowedOrigins')
 
 //Use whitelist
 const corsOptions = {
