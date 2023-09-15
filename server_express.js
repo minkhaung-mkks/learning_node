@@ -1,10 +1,12 @@
 const express = require('express')
 const path = require('path')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const { logEvents, logger } = require('./middleware/LogEvents')
 const errorHandler = require('./middleware/ErrorHandler')
 const corsOptions = require('./configs/CorOptions')
+const verifyJWT = require('./middleware/VerifyJWT')
 
 const PORT = process.env.PORT || 3500;
 const app = express();
@@ -16,6 +18,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.use(logger)
+
+app.use(cookieParser())
 // Serving Static Files like css, images, etc...
 // '/' is default
 app.use(express.static(path.join(__dirname, '/public')))
@@ -26,8 +30,10 @@ app.use('/subdirs', express.static(path.join(__dirname, '/public')))
 app.use('/', require('./routes/root'))
 // make it use the routes/subdir.js for /subdirs urls
 app.use('/subdirs', require('./routes/subdir'))
-app.use('/employees', require('./routes/apis/employees'))
 app.use('/auth', require('./routes/apis/auth'))
+// Make it so that user must be logged in to access Employee Routes
+app.use(verifyJWT)
+app.use('/employees', require('./routes/apis/employees'))
 
 //Custom middleware, next is necessary
 // app.use((req,res,next)=>{

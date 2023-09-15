@@ -9,5 +9,7 @@ router.route('/register')
 
 router.route('/login')
     .get(authController.handleLogin)
+router.route('/refreshLogin')
+    .get(authController.handleRefreshToken)
 
 module.exports = router

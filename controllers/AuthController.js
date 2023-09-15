@@ -67,7 +67,27 @@ const handleLogin = async (req, res) => {
         res.status(401).json({ "message": "Username or password is wrong." })
     }
 }
-
+const handleRefreshToken = async (req, res) => {
+    const cookies = req.cookies
+    if (!cookies?.jwt) return res.sendStatus(401);
+    await fetchUsers()
+    const refreshToken = cookies.jwt
+    const foundUser = data.users.find(person => person.refreshToken === refreshToken);
+    if (!foundUser) return res.sendStatus(403);
+    jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decodedToken) => {
+            if (err || foundUser.userName !== decodedToken.userName) return res.sendStatus(403)
+            const accessToken = jwt.sign(
+                { "userName": foundUser.userName },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: '1m' }
+            )
+            res.json({ accessToken })
+        }
+    )
+}
 const updateJsonFile = async (data, res, status = 201) => {
     try {
         fs.writeFileSync(filePath, JSON.stringify(data));   //'a+' is append mode
@@ -83,5 +103,6 @@ const updateData = async (data, res) => {
 }
 module.exports = {
     handleLogin,
-    registerNewUser
+    registerNewUser,
+    handleRefreshToken
 }
