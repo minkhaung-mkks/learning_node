@@ -25,7 +25,13 @@ const registerNewUser = async (req, res) => {
     if (dupUsername) return res.status(409).json({ "message": "Username already exists" })
     try {
         const hashedPwd = await bcrypt.hash(password, 10)
-        const newUser = { 'userName': userName, "password": hashedPwd }
+        const newUser = {
+            'userName': userName,
+            "password": hashedPwd,
+            "roles": {
+                "User": 2001
+            },
+        }
         data.users.push(newUser)
         updateData(data.users, res)
     }
@@ -43,8 +49,14 @@ const handleLogin = async (req, res) => {
     if (!foundUser) return res.status(401).json({ "message": "Username not Found" })
     const pwdMatch = await bcrypt.compare(password, foundUser.password)
     if (pwdMatch) {
+        const roles = Object.values(foundUser.roles)
         const accessToken = jwt.sign(
-            { "userName": foundUser.userName },
+            {
+                "UserInfo": {
+                    "userName": foundUser.userName,
+                    "roles": roles
+                }
+            },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '1m' }
         )
@@ -80,7 +92,12 @@ const handleRefreshToken = async (req, res) => {
         (err, decodedToken) => {
             if (err || foundUser.userName !== decodedToken.userName) return res.sendStatus(403)
             const accessToken = jwt.sign(
-                { "userName": foundUser.userName },
+                {
+                    "UserInfo": {
+                        "userName": foundUser.userName,
+                        "roles": roles
+                    }
+                },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '1m' }
             )
