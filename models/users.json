@@ -1,1 +1,23 @@
-[{"userName":"John","password":"$2b$10$oA2BmekfKCkZOD7sAklbRu61StzZ1PT2vw9/NKU8/ptw/LthhEjx."},{"userName":"John1","password":"$2b$10$CllW8902iyP97kyCLeOzPO2F9sqFsqNrLEZFKLpNiSJr8T9HYzpni","refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkpvaG4xIiwiaWF0IjoxNjk0Nzk5Mzc4LCJleHAiOjE2OTQ4ODU3Nzh9.hDOtOAwvkPaVKOo6HgxFSrrQaZAzSFO308Z0p1hL-3Q"}]
+[{
+    "userName": "John",
+    "password": "$2b$10$oA2BmekfKCkZOD7sAklbRu61StzZ1PT2vw9/NKU8/ptw/LthhEjx.",
+    "roles": {
+        "User": 2001,
+        "Edtior": 1984
+    }
+}, {
+    "userName": "John1",
+    "password": "$2b$10$CllW8902iyP97kyCLeOzPO2F9sqFsqNrLEZFKLpNiSJr8T9HYzpni",
+    "roles": {
+        "User": 2001
+    },
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkpvaG4xIiwiaWF0IjoxNjk0Nzk5Mzc4LCJleHAiOjE2OTQ4ODU3Nzh9.hDOtOAwvkPaVKOo6HgxFSrrQaZAzSFO308Z0p1hL-3Q"
+}, {
+    "userName": "Mary1",
+    "password": "$2b$10$CllW8902iyP97kyCLeOzPO2F9sqFsqNrLEZFKLpNiSJr8T9HYzpni",
+    "roles": {
+        "User": 2001,
+        "Admin": 5150,
+        "Edtior": 1984
+    }
+}]
