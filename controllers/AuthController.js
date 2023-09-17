@@ -45,8 +45,7 @@ const registerNewUser = async (req, res) => {
 const handleLogin = async (req, res) => {
     const { userName, password } = req.body;
     if (!userName || !password) return res.status(400).json({ "message": "Username and passwords are required" })
-    await fetchUsers()
-    const foundUser = data.users.find(person => person.userName === userName);
+    const foundUser = await User.findOne({ userName: userName }).exec();
     if (!foundUser) return res.status(401).json({ "message": "Username not Found" })
     const pwdMatch = await bcrypt.compare(password, foundUser.password)
     if (pwdMatch) {
@@ -66,13 +65,8 @@ const handleLogin = async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d' }
         )
-        const otherUsers = data.users.filter(person => person.userName !== userName);
-        const currentUser = { ...foundUser, refreshToken }
-        data.users = [...otherUsers, currentUser]
-        await fsPromises.writeFile(
-            path.join(__dirname, '..', 'models', 'users.json'),
-            JSON.stringify(data.users)
-        )
+        foundUser.refreshToken = refreshToken;
+        const result = await foundUser.save()
         res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 60 * 60 * 24 * 1000 })
         res.json({ accessToken })
     }
@@ -83,9 +77,8 @@ const handleLogin = async (req, res) => {
 const handleRefreshToken = async (req, res) => {
     const cookies = req.cookies
     if (!cookies?.jwt) return res.sendStatus(401);
-    await fetchUsers()
     const refreshToken = cookies.jwt
-    const foundUser = data.users.find(person => person.refreshToken === refreshToken);
+    const foundUser = await User.findOne({ refreshToken: refreshToken }).exec();
     if (!foundUser) return res.sendStatus(403);
     jwt.verify(
         refreshToken,
@@ -112,19 +105,14 @@ const handleLogout = async (req, res) => {
     if (!cookies?.jwt) return res.sendStatus(204); // No content
     const refreshToken = cookies.jwt
     // Is refreshToken in DB
-    const foundUser = data.users.find(person => person.refreshToken === refreshToken);
+    const foundUser = await User.findOne({ refreshToken: refreshToken }).exec();
     if (!foundUser) {
         // Use Secure: True in prod
         res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
         return res.sendStatus(204);
     };
-    const otherUsers = data.users.filter(person => person.refreshToken !== refreshToken);
-    const currentUser = { ...foundUser, refreshToken: '' }
-    data.users = [...otherUsers, currentUser]
-    await fsPromises.writeFile(
-        path.join(__dirname, '..', 'models', 'users.json'),
-        JSON.stringify(data.users)
-    )
+    foundUser.refreshToken = '';
+    const result = await foundUser.save()
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
     res.sendStatus(200)
 }
