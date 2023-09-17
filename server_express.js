@@ -10,8 +10,12 @@ const corsOptions = require('./configs/CorOptions')
 const verifyJWT = require('./middleware/VerifyJWT')
 const addCredentialsHeader = require('./middleware/addCredentials')
 
+const mongoose = require('mongoose');
+const connectDB = require('./middleware/dbConnect');
 const PORT = process.env.PORT || 3500;
 const app = express();
+
+connectDB()
 
 //built in middleware to handle urlencoded Data like form data
 //Content-Type: application/x-www-form-urlencoded
@@ -73,5 +77,7 @@ app.all('*', (req, res) => {
     }
 })
 
-
-app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`))
+mongoose.connection.once('connected', () => {
+    console.log("Mongoose connected")
+    app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`))
+})
