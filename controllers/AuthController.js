@@ -1,38 +1,40 @@
-const data = {}
-const fs = require('fs');
-const fsPromises = fs.promises;
+
 const jwt = require('jsonwebtoken')
-const path = require('path')
-const filePath = "models/users.json"
 const bcrypt = require('bcrypt')
-data.users = []
-const fetchUsers = async () => {
-    fs.readFile(filePath, (err, fileData) => {
-        if (err) {
-            console.error(err);
-        } else {
-            data.users = JSON.parse(fileData);
-        }
-    })
-}
-fetchUsers()
+const User = require('../models/Users')
+// const fetchUsers = async () => {
+//     fs.readFile(filePath, (err, fileData) => {
+//         if (err) {
+//             console.error(err);
+//         } else {
+//             data.users = JSON.parse(fileData);
+//         }
+//     })
+// }
 const registerNewUser = async (req, res) => {
     const { userName, password } = req.body;
     if (!userName || !password) return res.status(400).json({ "message": "Username and passwords are required" })
-    await fetchUsers()
-    const dupUsername = data.users.find(person => person.userName === userName);
+    const dupUsername = await User.findOne({ userName: userName }).exec();
     if (dupUsername) return res.status(409).json({ "message": "Username already exists" })
     try {
         const hashedPwd = await bcrypt.hash(password, 10)
-        const newUser = {
+        // Method 1:
+        // const newUser = {
+        //     'userName': userName,
+        //     "password": hashedPwd,
+        // }
+        // const registerUser = new User(newUser)
+        // const result = await registerUser.save()
+        // Method 2:
+        // const newUser = new User()
+        // newUser.userName = userName;
+        // newUser.password = password;
+        // const result = await newUser.save()
+        const result = await User.create({
             'userName': userName,
             "password": hashedPwd,
-            "roles": {
-                "User": 2001
-            },
-        }
-        data.users.push(newUser)
-        updateData(data.users, res)
+        })
+        res.status(201).send(`New user ${userName} registered`);
     }
     catch (err) {
         console.error(err)
@@ -126,19 +128,19 @@ const handleLogout = async (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
     res.sendStatus(200)
 }
-const updateJsonFile = async (data, res, status = 201) => {
-    try {
-        fs.writeFileSync(filePath, JSON.stringify(data));   //'a+' is append mode
-        res.status(status).send("Data updated successfully " + JSON.stringify(data));
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error writing to file");
-    }
-}
-const updateData = async (data, res) => {
-    await updateJsonFile(data, res)
-    updateFetchedData()
-}
+// const updateJsonFile = async (data, res, status = 201) => {
+//     try {
+//         fs.writeFileSync(filePath, JSON.stringify(data));   //'a+' is append mode
+//         res.status(status).send("Data updated successfully " + JSON.stringify(data));
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send("Error writing to file");
+//     }
+// }
+// const updateData = async (data, res) => {
+//     await updateJsonFile(data, res)
+//     updateFetchedData()
+// }
 module.exports = {
     handleLogin,
     registerNewUser,
