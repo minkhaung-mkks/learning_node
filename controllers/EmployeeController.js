@@ -1,7 +1,4 @@
-const data = {}
-const fs = require('fs');
-const filePath = "models/employees.json"
-const Employee = "../models/Employees"
+const Employee = require("../models/Employees")
 
 const getAllEmployee = async (req, res) => {
     const employees = await Employee.find();
@@ -10,10 +7,14 @@ const getAllEmployee = async (req, res) => {
 }
 
 const addNewEmployee = async (req, res) => {
-    if (req?.body?.firstName || req?.body?.lastName) {
+    console.log(req.body)
+    console.log(req.body.firstName)
+    console.log(req.body.lastName)
+    if (!req?.body?.firstName || !req?.body?.lastName) {
         return res.status(400).json({ 'message': 'First and Last names are required' })
     }
     try {
+        console.log(Employee)
         const result = await Employee.create({
             "firstName": req.body.firstName,
             "lastName": req.body.lastName,
@@ -29,7 +30,7 @@ const updateEmployees = async (req, res) => {
     if (req?.body?.id) {
         return res.status(400).json({ 'message': 'Id is required' })
     }
-    const reqId = parseInt(req.body.id)
+    const reqId = req.body.id
     const employee = await Employee.findOne({ _id: reqId }).exec()
     if (!employee) {
         return res.status(204).json({ "message": `No such employee with id of ${reqId} found.` })
@@ -44,7 +45,7 @@ const deleteEmployees = async (req, res) => {
     if (req?.body?.id) {
         return res.status(400).json({ 'message': 'Id is required' })
     }
-    const reqId = parseInt(req.body.id)
+    const reqId = req.body.id
     const employee = await Employee.findOne({ _id: reqId }).exec()
     if (!employee) {
         return res.status(204).json({ "message": `No such employee with id of ${reqId} found.` })
@@ -56,7 +57,7 @@ const getEmployee = async (req, res) => {
     if (req?.params?.id) {
         return res.status(400).json({ 'message': 'Id is required' })
     }
-    const reqId = parseInt(req.params.id)
+    const reqId = req.params.id
     const employee = await Employee.findOne({ _id: reqId }).exec()
     if (!employee) {
         return res.status(204).json({ "message": `No such employee with id of ${reqId} found.` })
