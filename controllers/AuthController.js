@@ -2,15 +2,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/Users')
-// const fetchUsers = async () => {
-//     fs.readFile(filePath, (err, fileData) => {
-//         if (err) {
-//             console.error(err);
-//         } else {
-//             data.users = JSON.parse(fileData);
-//         }
-//     })
-// }
+
 const registerNewUser = async (req, res) => {
     const { userName, password } = req.body;
     if (!userName || !password) return res.status(400).json({ "message": "Username and passwords are required" })
@@ -116,19 +108,6 @@ const handleLogout = async (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
     res.sendStatus(200)
 }
-// const updateJsonFile = async (data, res, status = 201) => {
-//     try {
-//         fs.writeFileSync(filePath, JSON.stringify(data));   //'a+' is append mode
-//         res.status(status).send("Data updated successfully " + JSON.stringify(data));
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send("Error writing to file");
-//     }
-// }
-// const updateData = async (data, res) => {
-//     await updateJsonFile(data, res)
-//     updateFetchedData()
-// }
 module.exports = {
     handleLogin,
     registerNewUser,
