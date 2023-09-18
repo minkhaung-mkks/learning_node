@@ -32,7 +32,7 @@ const updateEmployees = async (req, res) => {
     const reqId = parseInt(req.body.id)
     const employee = await Employee.findOne({ _id: reqId }).exec()
     if (!employee) {
-        return res.status(204).json({ "message": `No such employee with id of ${id} found.` })
+        return res.status(204).json({ "message": `No such employee with id of ${reqId} found.` })
     }
     if (req.body?.firstName) employee.firstName = req.body.firstName
     if (req.body?.lastName) employee.lastName = req.body.lastName
@@ -47,7 +47,7 @@ const deleteEmployees = async (req, res) => {
     const reqId = parseInt(req.body.id)
     const employee = await Employee.findOne({ _id: reqId }).exec()
     if (!employee) {
-        return res.status(204).json({ "message": `No such employee with id of ${id} found.` })
+        return res.status(204).json({ "message": `No such employee with id of ${reqId} found.` })
     }
     const result = await Employee.deleteOne({ _id: reqId })
 }
@@ -59,7 +59,7 @@ const getEmployee = (req, res) => {
     const reqId = parseInt(req.params.id)
     const employee = await Employee.findOne({ _id: reqId }).exec()
     if (!employee) {
-        return res.status(204).json({ "message": `No such employee with id of ${id} found.` })
+        return res.status(204).json({ "message": `No such employee with id of ${reqId} found.` })
     }
     res.json(employee)
 }
