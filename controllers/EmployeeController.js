@@ -27,7 +27,7 @@ const addNewEmployee = async (req, res) => {
 
 const updateEmployees = async (req, res) => {
     //Update Employee
-    if (req?.body?.id) {
+    if (!req?.body?.id) {
         return res.status(400).json({ 'message': 'Id is required' })
     }
     const reqId = req.body.id
@@ -42,7 +42,7 @@ const updateEmployees = async (req, res) => {
 }
 
 const deleteEmployees = async (req, res) => {
-    if (req?.body?.id) {
+    if (!req?.body?.id) {
         return res.status(400).json({ 'message': 'Id is required' })
     }
     const reqId = req.body.id
@@ -54,7 +54,7 @@ const deleteEmployees = async (req, res) => {
 }
 
 const getEmployee = async (req, res) => {
-    if (req?.params?.id) {
+    if (!req?.params?.id) {
         return res.status(400).json({ 'message': 'Id is required' })
     }
     const reqId = req.params.id
