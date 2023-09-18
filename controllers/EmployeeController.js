@@ -3,7 +3,7 @@ const fs = require('fs');
 const filePath = "models/employees.json"
 const Employee = "../models/Employees"
 
-const getAllEmployee = (req, res) => {
+const getAllEmployee = async (req, res) => {
     const employees = await Employee.find();
     if (!employees) return res.status(204).json({ 'message': 'No Employees Found' })
     res.json(employees)
@@ -52,7 +52,7 @@ const deleteEmployees = async (req, res) => {
     const result = await Employee.deleteOne({ _id: reqId })
 }
 
-const getEmployee = (req, res) => {
+const getEmployee = async (req, res) => {
     if (req?.params?.id) {
         return res.status(400).json({ 'message': 'Id is required' })
     }
