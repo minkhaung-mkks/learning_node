@@ -10,7 +10,9 @@ router.get('^/$|/index(.html)?', (req, res) => {
 router.get('/new_page(.html)?', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'new_page.html'))
 })
-
+router.get('/login(.html)?', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'login.html'))
+})
 router.get('/old_page(.html)?', (req, res) => {
     res.redirect(301, '/new_page')
 })
