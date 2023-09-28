@@ -14,6 +14,7 @@ const getGoogleOAuthURL = () => {
             "https://www.googleapis.com/auth/userinfo.profile"
         ].join(" ")
     }
+    console.log(params)
     const qs = new URLSearchParams(params)
     console.log(qs.toString())
     return `${oauth2Endpoint}?${qs.toString()}`

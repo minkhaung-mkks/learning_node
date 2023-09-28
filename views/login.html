@@ -10,7 +10,31 @@
 
 <body>
     <a id="loginButton" href="#">Login with Google</a>
-    <script type="module" src="script.js"></script>
+    <script type="module">
+        const getGoogleOAuthURL = () => {
+        const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+        const params = {
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        redirect_uri: process.env.GOOGLE_REDIRECT_URL,
+        response_type: "code",
+        prompt: "consent",
+        access_type: "offline",
+        scope: [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+        ].join(" ")
+        }
+        console.log(params)
+        const qs = new URLSearchParams(params)
+        console.log(qs.toString())
+        return `${oauth2Endpoint}?${qs.toString()}`
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginButton = document.getElementById('loginButton');
+            loginButton.href = getGoogleOAuthURL();
+        });
+    </script>
 </body>
 
 </html>
