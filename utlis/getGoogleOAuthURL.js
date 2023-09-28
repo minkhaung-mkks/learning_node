@@ -15,7 +15,7 @@ const getGoogleOAuthURL = () => {
         ].join(" ")
     }
     const qs = new URLSearchParams(params)
-
+    console.log(qs.toString())
     return `${oauth2Endpoint}?${qs.toString()}`
 }
 
