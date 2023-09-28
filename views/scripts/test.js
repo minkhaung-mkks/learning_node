@@ -2,8 +2,5 @@ import getGoogleOAuthURL from '../../utlis/getGoogleOAuthURL.js'; // Assuming th
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginButton = document.getElementById('loginButton');
-    loginButton.addEventListener('click', () => {
-        const url = getGoogleOAuthURL();
-        window.location.href = url;
-    });
+    loginButton.href = getGoogleOAuthURL();
 });
